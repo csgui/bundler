@@ -46,10 +46,8 @@ module Bundler
         root = File.expand_path("../man", __FILE__)
 
         if have_groff? && root !~ %r{^file:/.+!/META-INF/jruby.home/.+}
-          groff   = "groff -Wall -mtty-char -mandoc -Tascii"
-          pager   = ENV['MANPAGER'] || ENV['PAGER'] || 'less -R'
-
-          Kernel.exec "#{groff} #{root}/#{command} | #{pager}"
+          groff = "groff -Wall -mtty-char -mandoc -Tascii"
+          Kernel.exec "#{groff} #{root}/#{command} | #{pager_system}"
         else
           puts File.read("#{root}/#{command}.txt")
         end
@@ -780,6 +778,30 @@ module Bundler
       suggestions = SimilarityDetector.new(alternate_names).similar_word_list(missing_gem_name)
       message += "\nDid you mean #{suggestions}?" if suggestions
       message
+    end
+
+    def pager_system
+      pager_environment_variable or available_pager_system
+    end
+
+    def pager_environment_variable
+      ENV['PAGER'] or ENV['MANPAGER']
+    end
+
+    def available_pager_system
+      less or more or fallback_pager
+    end
+
+    def less
+      'less -R' if !(`which less` rescue '').empty?
+    end
+
+    def more
+      'more' if !(`which more` rescue '').empty?
+    end
+
+    def fallback_pager
+      'cat'
     end
 
   end

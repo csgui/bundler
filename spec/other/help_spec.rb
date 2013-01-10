@@ -25,6 +25,25 @@ describe "bundle help" do
     expect(out).to eq(%|["-Wall", "-mtty-char", "-mandoc", "-Tascii", "#{root}/lib/bundler/man/bundle-install"]|)
   end
 
+  it "rely on PAGER environment variable" do
+    fake_groff!
+
+    bundle "help"
+
+  end
+
+  it "rely on 'less' when PAGER environment variable doesn't exists" do
+
+  end
+
+  it "rely on 'more' when neither PAGER environment variable or 'less' doesn't exists" do
+
+  end
+
+  it "fallback is 'cat'" do
+
+  end
+
   it "simply outputs the txt file when there is no groff on the path" do
     kill_path!
 
