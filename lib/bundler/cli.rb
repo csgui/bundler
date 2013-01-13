@@ -27,9 +27,9 @@ module Bundler
 
     def help(cli = nil)
       case cli
-      when "gemfile" then command = "gemfile.5"
-      when nil       then command = "bundle"
-      else command = "bundle-#{cli}"
+        when "gemfile" then command = "gemfile.5"
+        when nil       then command = "bundle"
+        else command = "bundle-#{cli}"
       end
 
       manpages = %w(
@@ -46,8 +46,8 @@ module Bundler
         root = File.expand_path("../man", __FILE__)
 
         if have_groff? && root !~ %r{^file:/.+!/META-INF/jruby.home/.+}
-          groff   = "groff -Wall -mtty-char -mandoc -Tascii"
-          pager   = ENV['MANPAGER'] || ENV['PAGER'] || 'less -R'
+          groff = "groff -Wall -mtty-char -mandoc -Tascii"
+          pager = pager_system
 
           Kernel.exec "#{groff} #{root}/#{command} | #{pager}"
         else
@@ -97,11 +97,11 @@ module Bundler
       If not, the first missing gem is listed and Bundler exits status 1.
     D
     method_option "gemfile", :type => :string, :banner =>
-      "Use the specified gemfile instead of Gemfile"
+        "Use the specified gemfile instead of Gemfile"
     method_option "path", :type => :string, :banner =>
-      "Specify a different path than the system default ($BUNDLE_PATH or $GEM_HOME). Bundler will remember this value for future installs on this machine"
+        "Specify a different path than the system default ($BUNDLE_PATH or $GEM_HOME). Bundler will remember this value for future installs on this machine"
     method_option "dry-run", :type => :boolean, :default => false, :banner =>
-      "Lock the Gemfile"
+        "Lock the Gemfile"
     def check
       ENV['BUNDLE_GEMFILE'] = File.expand_path(options[:gemfile]) if options[:gemfile]
 
@@ -142,35 +142,35 @@ module Bundler
       If the bundle has already been installed, bundler will tell you so and then exit.
     D
     method_option "without", :type => :array, :banner =>
-      "Exclude gems that are part of the specified named group."
+        "Exclude gems that are part of the specified named group."
     method_option "gemfile", :type => :string, :banner =>
-      "Use the specified gemfile instead of Gemfile"
+        "Use the specified gemfile instead of Gemfile"
     method_option "no-prune", :type => :boolean, :banner =>
-      "Don't remove stale gems from the cache."
+        "Don't remove stale gems from the cache."
     method_option "no-cache", :type => :boolean, :banner =>
-      "Don't update the existing gem cache."
+        "Don't update the existing gem cache."
     method_option "quiet", :type => :boolean, :banner =>
-      "Only output warnings and errors."
+        "Only output warnings and errors."
     method_option "local", :type => :boolean, :banner =>
-      "Do not attempt to fetch gems remotely and use the gem cache instead"
+        "Do not attempt to fetch gems remotely and use the gem cache instead"
     method_option "binstubs", :type => :string, :lazy_default => "bin", :banner =>
-      "Generate bin stubs for bundled gems to ./bin"
+        "Generate bin stubs for bundled gems to ./bin"
     method_option "shebang", :type => :string, :banner =>
-      "Specify a different shebang executable name than the default (usually 'ruby')"
+        "Specify a different shebang executable name than the default (usually 'ruby')"
     method_option "path", :type => :string, :banner =>
-      "Specify a different path than the system default ($BUNDLE_PATH or $GEM_HOME). Bundler will remember this value for future installs on this machine"
+        "Specify a different path than the system default ($BUNDLE_PATH or $GEM_HOME). Bundler will remember this value for future installs on this machine"
     method_option "system", :type => :boolean, :banner =>
-      "Install to the system location ($BUNDLE_PATH or $GEM_HOME) even if the bundle was previously installed somewhere else for this application"
+        "Install to the system location ($BUNDLE_PATH or $GEM_HOME) even if the bundle was previously installed somewhere else for this application"
     method_option "frozen", :type => :boolean, :banner =>
-      "Do not allow the Gemfile.lock to be updated after this install"
+        "Do not allow the Gemfile.lock to be updated after this install"
     method_option "deployment", :type => :boolean, :banner =>
-      "Install using defaults tuned for deployment environments"
+        "Install using defaults tuned for deployment environments"
     method_option "standalone", :type => :array, :lazy_default => [], :banner =>
-      "Make a bundle that can work without the Bundler runtime"
+        "Make a bundle that can work without the Bundler runtime"
     method_option "full-index", :type => :boolean, :banner =>
-      "Use the rubygems modern index instead of the API endpoint"
+        "Use the rubygems modern index instead of the API endpoint"
     method_option "clean", :type => :boolean, :banner =>
-      "Run bundle clean automatically after install"
+        "Run bundle clean automatically after install"
     def install
       opts = options.dup
       if opts[:without]
@@ -238,10 +238,10 @@ module Bundler
         absolute_path = File.expand_path(Bundler.settings[:path])
         relative_path = absolute_path.sub(File.expand_path('.'), '.')
         Bundler.ui.confirm "Your bundle is complete! " +
-          "It was installed into #{relative_path}"
+                               "It was installed into #{relative_path}"
       else
         Bundler.ui.confirm "Your bundle is complete! " +
-          "Use `bundle show [gemname]` to see where a bundled gem is installed."
+                               "Use `bundle show [gemname]` to see where a bundled gem is installed."
       end
       Installer.post_install_messages.to_a.each do |name, msg|
         Bundler.ui.confirm "Post-install message from #{name}:\n#{msg}"
@@ -269,9 +269,9 @@ module Bundler
     D
     method_option "source", :type => :array, :banner => "Update a specific source (and all gems associated with it)"
     method_option "local", :type => :boolean, :banner =>
-      "Do not attempt to fetch gems remotely and use the gem cache instead"
+        "Do not attempt to fetch gems remotely and use the gem cache instead"
     method_option "quiet", :type => :boolean, :banner =>
-      "Only output warnings and errors."
+        "Only output warnings and errors."
     method_option "full-index", :type => :boolean, :banner =>
         "Use the rubygems modern index instead of the API endpoint"
     def update(*gems)
@@ -298,7 +298,7 @@ module Bundler
       Bundler.load.cache if Bundler.root.join("vendor/cache").exist?
       clean if Bundler.settings[:clean] && Bundler.settings[:path]
       Bundler.ui.confirm "Your bundle is updated! " +
-        "Use `bundle show [gemname]` to see where a bundled gem is installed."
+                             "Use `bundle show [gemname]` to see where a bundled gem is installed."
     end
 
     desc "show [GEM]", "Shows all gems that are part of the bundle, or the path to a given gem"
@@ -307,7 +307,7 @@ module Bundler
       Calling show with [GEM] will list the exact location of that gem on your machine.
     D
     method_option "paths", :type => :boolean,
-      :banner => "List the paths of all gems that are required by your Gemfile."
+                  :banner => "List the paths of all gems that are required by your Gemfile."
     def show(gem_name = nil)
       Bundler.definition.validate_ruby!
       Bundler.load.lock
@@ -337,9 +337,9 @@ module Bundler
       the bin directory specified by --binstubs or the default location.
     D
     method_option "path", :type => :string, :lazy_default => "bin", :banner =>
-      "the directory to put the binstubs, defaults to ./bin"
+        "the directory to put the binstubs, defaults to ./bin"
     method_option "force", :type => :boolean, :default => false, :banner =>
-      "forces the writing of a binstub, even if it already exists"
+        "forces the writing of a binstub, even if it already exists"
     def binstubs(gem_name)
       Bundler.definition.validate_ruby!
       Bundler.settings[:bin] = options["path"] if options["path"]
@@ -365,7 +365,7 @@ module Bundler
     method_option "pre", :type => :boolean, :banner => "Check for newer pre-release gems"
     method_option "source", :type => :array, :banner => "Check against a specific source"
     method_option "local", :type => :boolean, :banner =>
-      "Do not attempt to fetch gems remotely and use the gem cache instead"
+        "Do not attempt to fetch gems remotely and use the gem cache instead"
     def outdated(*gems)
       sources = Array(options[:source])
       Bundler.definition.validate_ruby!
@@ -517,49 +517,49 @@ module Bundler
       end
 
       case scope
-      when "delete"
-        Bundler.settings.set_local(name, nil)
-        Bundler.settings.set_global(name, nil)
-      when "local", "global"
-        if args.empty?
-          Bundler.ui.confirm "Settings for `#{name}` in order of priority. The top value will be used"
-          with_padding do
-            Bundler.settings.pretty_values_for(name).each { |line| Bundler.ui.info line }
+        when "delete"
+          Bundler.settings.set_local(name, nil)
+          Bundler.settings.set_global(name, nil)
+        when "local", "global"
+          if args.empty?
+            Bundler.ui.confirm "Settings for `#{name}` in order of priority. The top value will be used"
+            with_padding do
+              Bundler.settings.pretty_values_for(name).each { |line| Bundler.ui.info line }
+            end
+            return
           end
-          return
-        end
 
-        locations = Bundler.settings.locations(name)
+          locations = Bundler.settings.locations(name)
 
-        if scope == "global"
-          if local = locations[:local]
-            Bundler.ui.info "Your application has set #{name} to #{local.inspect}. This will override the " \
+          if scope == "global"
+            if local = locations[:local]
+              Bundler.ui.info "Your application has set #{name} to #{local.inspect}. This will override the " \
               "global value you are currently setting"
-          end
+            end
 
-          if env = locations[:env]
-            Bundler.ui.info "You have a bundler environment variable for #{name} set to #{env.inspect}. " \
+            if env = locations[:env]
+              Bundler.ui.info "You have a bundler environment variable for #{name} set to #{env.inspect}. " \
               "This will take precedence over the global value you are setting"
+            end
+
+            if global = locations[:global]
+              Bundler.ui.info "You are replacing the current global value of #{name}, which is currently #{global.inspect}"
+            end
           end
 
-          if global = locations[:global]
-            Bundler.ui.info "You are replacing the current global value of #{name}, which is currently #{global.inspect}"
+          if scope == "local" && local = locations[:local]
+            Bundler.ui.info "You are replacing the current local value of #{name}, which is currently #{local.inspect}"
           end
-        end
 
-        if scope == "local" && local = locations[:local]
-          Bundler.ui.info "You are replacing the current local value of #{name}, which is currently #{local.inspect}"
-        end
+          if name.match(/\Alocal\./)
+            pathname = Pathname.new(args.join(" "))
+            args = [pathname.expand_path.to_s] if pathname.directory?
+          end
 
-        if name.match(/\Alocal\./)
-          pathname = Pathname.new(args.join(" "))
-          args = [pathname.expand_path.to_s] if pathname.directory?
-        end
-
-        Bundler.settings.send("set_#{scope}", name, args.join(" "))
-      else
-        Bundler.ui.error "Invalid scope --#{scope} given. Please use --local or --global."
-        exit 1
+          Bundler.settings.send("set_#{scope}", name, args.join(" "))
+        else
+          Bundler.ui.error "Invalid scope --#{scope} given. Please use --local or --global."
+          exit 1
       end
     end
 
@@ -641,12 +641,12 @@ module Bundler
       git_user_name = `git config user.name`.chomp
       git_user_email = `git config user.email`.chomp
       opts = {
-        :name            => name,
-        :namespaced_path => namespaced_path,
-        :constant_name   => constant_name,
-        :constant_array  => constant_array,
-        :author          => git_user_name.empty? ? "TODO: Write your name" : git_user_name,
-        :email           => git_user_email.empty? ? "TODO: Write your email address" : git_user_email
+          :name            => name,
+          :namespaced_path => namespaced_path,
+          :constant_name   => constant_name,
+          :constant_array  => constant_array,
+          :author          => git_user_name.empty? ? "TODO: Write your name" : git_user_name,
+          :email           => git_user_email.empty? ? "TODO: Write your email address" : git_user_email
       }
       gemspec_dest = File.join(target, "#{name}.gemspec")
       template(File.join("newgem/Gemfile.tt"),               File.join(target, "Gemfile"),                             opts)
@@ -661,13 +661,13 @@ module Bundler
         template(File.join("newgem/bin/newgem.tt"),          File.join(target, 'bin', name),                           opts)
       end
       case options[:test]
-      when 'rspec'
-        template(File.join("newgem/rspec.tt"),               File.join(target, ".rspec"),                              opts)
-        template(File.join("newgem/spec/spec_helper.rb.tt"), File.join(target, "spec/spec_helper.rb"),                 opts)
-        template(File.join("newgem/spec/newgem_spec.rb.tt"), File.join(target, "spec/#{namespaced_path}_spec.rb"),     opts)
-      when 'minitest'
-        template(File.join("newgem/test/minitest_helper.rb.tt"), File.join(target, "test/minitest_helper.rb"),         opts)
-        template(File.join("newgem/test/test_newgem.rb.tt"),     File.join(target, "test/test_#{namespaced_path}.rb"), opts)
+        when 'rspec'
+          template(File.join("newgem/rspec.tt"),               File.join(target, ".rspec"),                              opts)
+          template(File.join("newgem/spec/spec_helper.rb.tt"), File.join(target, "spec/spec_helper.rb"),                 opts)
+          template(File.join("newgem/spec/newgem_spec.rb.tt"), File.join(target, "spec/#{namespaced_path}_spec.rb"),     opts)
+        when 'minitest'
+          template(File.join("newgem/test/minitest_helper.rb.tt"), File.join(target, "test/minitest_helper.rb"),         opts)
+          template(File.join("newgem/test/test_newgem.rb.tt"),     File.join(target, "test/test_#{namespaced_path}.rb"), opts)
       end
       Bundler.ui.info "Initializating git repo in #{target}"
       Dir.chdir(target) { `git init`; `git add .` }
@@ -683,9 +683,9 @@ module Bundler
 
     desc "clean", "Cleans up unused gems in your bundler directory"
     method_option "dry-run", :type => :boolean, :default => false, :banner =>
-      "only print out changes, do not actually clean gems"
+        "only print out changes, do not actually clean gems"
     method_option "force", :type => :boolean, :default => false, :banner =>
-      "forces clean even if --path is not set"
+        "forces clean even if --path is not set"
     def clean
       if Bundler.settings[:path] || options[:force]
         Bundler.settings[:dry_run] = options[:"dry-run"]
@@ -698,7 +698,7 @@ module Bundler
 
     desc "platform", "Displays platform compatibility information"
     method_option "ruby", :type => :boolean, :default => false, :banner =>
-      "only display ruby related platform information"
+        "only display ruby related platform information"
     def platform
       platforms    = Bundler.definition.platforms.map {|p| "* #{p}" }
       ruby_version = Bundler.definition.ruby_version
@@ -753,7 +753,7 @@ module Bundler
       end
     end
 
-  private
+    private
 
     def setup_cache_all
       Bundler.settings[:cache_all] = options[:all] if options.key?("all")
@@ -793,6 +793,30 @@ module Bundler
       suggestions = SimilarityDetector.new(alternate_names).similar_word_list(missing_gem_name)
       message += "\nDid you mean #{suggestions}?" if suggestions
       message
+    end
+
+    def pager_system
+      pager_environment_variable or available_pager_system
+    end
+
+    def pager_environment_variable
+      ENV['PAGER'] or ENV['MANPAGER']
+    end
+
+    def available_pager_system
+      less or more or fallback_pager
+    end
+
+    def less
+      'less -R' if !(`which less` rescue '').empty?
+    end
+
+    def more
+      'more' if !(`which more` rescue '').empty?
+    end
+
+    def fallback_pager
+      'cat'
     end
 
   end
