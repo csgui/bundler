@@ -47,7 +47,9 @@ module Bundler
 
         if have_groff? && root !~ %r{^file:/.+!/META-INF/jruby.home/.+}
           groff = "groff -Wall -mtty-char -mandoc -Tascii"
-          Kernel.exec "#{groff} #{root}/#{command} | #{pager_system}"
+          pager = pager_system
+
+          Kernel.exec "#{groff} #{root}/#{command} | #{pager}"
         else
           puts File.read("#{root}/#{command}.txt")
         end
