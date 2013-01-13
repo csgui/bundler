@@ -1,9 +1,22 @@
+## 1.3.0.pre.5 (Jan 9, 2013)
+
+Features:
+
+  - make `--standalone` require lines ruby engine/version agnostic
+  - add `--dry-run` to `bundle clean` (@wfarr, #2237)
+
+Bugfixes:
+
+  - don't skip writing binstubs when doing `bundle install`
+  - distinguish between ruby 1.9/2.0 when using :platforms (@spastorino)
+
 ## 1.3.0.pre.4 (Jan 3, 2013)
 
 Features:
 
   - `bundle binstubs <gem>` to setup individual binstubs
   - `bundle install --binstubs ""` will remove binstubs option
+  - `bundle clean --dry-run` will print out gems instead of removing them
 
 Bugfixes:
 
@@ -17,6 +30,7 @@ Features:
   - pushing gems during `rake release` can be disabled (@trans)
   - installing gems with `rake install` is much faster (@utkarshkukreti)
   - added platforms :ruby_20 and :mri_20, since the ABI has changed
+  - added '--edit' option to open generated gemspec in editor
 
 Bugfixes:
 
